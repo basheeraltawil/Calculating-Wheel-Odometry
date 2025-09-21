@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robotics Tutorials | AIBOMECH</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']],
+                tags: 'ams'
+            }
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --text: #333;
+            --text-light: #777;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background-color: #f9f9f9;
+        }
+        
+        a {
+            text-decoration: none;
+            color: var(--secondary);
+            transition: var(--transition);
+        }
+        
+        a:hover {
+            color: var(--accent);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 0.5rem;
+            color: var(--accent);
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-menu li {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-menu a {
+            color: white;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+        
+        .nav-menu a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent);
+            transition: var(--transition);
+        }
+        
+        .nav-menu a:hover:after {
+            width: 100%;
+        }
+        
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .youtube-link {
+            display: inline-flex;
+            align-items: center;
+            background: #ff0000;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+            margin-top: 1rem;
+            transition: var(--transition);
+        }
+        
+        .youtube-link:hover {
+            background: #cc0000;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .youtube-link i {
+            margin-right: 0.5rem;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .article-content {
+            flex: 2;
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .sidebar {
+            flex: 1;
+        }
+        
+        .post-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        .post-meta img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            object-fit: cover;
+        }
+        
+        .post-content h2 {
+            color: var(--primary);
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .post-content h3 {
+            color: var(--secondary);
+            margin: 1.5rem 0 0.8rem;
+        }
+        
+        .post-content p {
+            margin-bottom: 1rem;
+        }
+        
+        .post-content ul, .post-content ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+        
+        .post-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .post-content pre {
+            background: #f5f5f5;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .post-content code {
+            font-family: 'Source Code Pro', monospace;
+            background: #f5f5f5;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9rem;
+        }
+        
+        .math-formula {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            text-align: center;
+        }
+        
+        .math-formula .formula-label {
+            display: block;
+            font-weight: 500;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .table-of-contents {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        
+        .table-of-contents h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+        
+        .table-of-contents ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .table-of-contents li {
+            margin-bottom: 0.8rem;
+            padding-left: 1rem;
+            position: relative;
+        }
+        
+        .table-of-contents li:before {
+            content: "•";
+            color: var(--secondary);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .example-box {
+            background: #e8f4fc;
+            border-left: 4px solid var(--secondary);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .example-box h4 {
+            color: var(--secondary);
+            margin-top: 0;
+        }
+        
+        /* Sidebar Widgets */
+        .widget {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .widget h3 {
+            color: var(--primary);
+            margin-top: 0;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .recent-posts ul {
+            list-style: none;
+        }
+        
+        .recent-posts li {
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid var(--light);
+        }
+        
+        .recent-posts li:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .subscribe-form input {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .tag {
+            background: var(--light);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 0 2rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-section h3 {
+            color: var(--accent);
+            margin-bottom: 1.2rem;
+        }
+        
+        .footer-section p {
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                background: var(--primary);
+                width: 100%;
+                height: calc(100vh - 70px);
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 2rem;
+                transition: var(--transition);
+            }
+            
+            .nav-menu.active {
+                left: 0;
+            }
+            
+            .nav-menu li {
+                margin: 1.5rem 0;
+            }
+            
+            .hero {
+                padding: 2rem 0;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-robot"></i>
+                <span>AIBOMECH</span>
+            </div>
+            
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Ask AIBOMECH</a></li>
+                <li><a href="#">Tutorials</a></li>
+                <li><a href="#">About Me</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>Calculating Wheel Odometry for a Differential Drive Robot</h1>
+            <p>Learn how to estimate a robot's position and orientation based on wheel rotations</p>
+            <a href="https://www.youtube.com/@AIBOMECH" class="youtube-link" target="_blank">
+                <i class="fab fa-youtube"></i> Visit My YouTube Channel
+            </a>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container main-content">
+        <!-- Article Content -->
+        <div class="article-content">
+            <div class="post-meta">
+                <img src="https://via.placeholder.com/50" alt="Author">
+                <div>
+                    <div>By AIBOMECH</div>
+                    <div>Posted on March 11, 2024 · Categories: Robotics · Tags: ground</div>
+                </div>
+            </div>
+            
+            <div class="post-content">
+                <p>Have you ever wondered how robots navigate their environments so precisely? A key component for many mobile robots is differential drive. This type of robot uses two independently controlled wheels, allowing for maneuvers like moving forward, backward, and turning.</p>
+                
+                <p>But how does the robot itself know where it is and how far it's traveled? This is where wheel odometry comes in.</p>
+                
+                <p>Wheel odometry is a technique for estimating a robot's position and orientation based on the rotations of its wheels. By measuring the number of revolutions each wheel makes, we can calculate the distance traveled and any changes in direction. This information is important for tasks like path planning, obstacle avoidance, and overall robot control.</p>
+                
+                <p>This tutorial will guide you through calculating wheel odometry for a differential drive robot. We'll explore how to convert raw wheel encoder data – the number of revolutions for each wheel – into the robot's displacement in the x and y directions (relative to a starting point) and the change in its orientation angle. Buckle up and get ready to dive into the fascinating world of robot self-localization!</p>
+                
+                <div class="table-of-contents">
+                    <h3>Table of Contents</h3>
+                    <ul>
+                        <li><a href="#prerequisites">Prerequisites</a></li>
+                        <li><a href="#calculate-wheel-displacements">Calculate Wheel Displacements</a></li>
+                        <li><a href="#calculate-average-displacement">Calculate the Robot's Average Displacement and Orientation Change</a></li>
+                        <li><a href="#calculate-global-position">Calculate Changes in the Global Position</a></li>
+                        <li><a href="#update-global-position">Update the Robot's Global Position</a></li>
+                        <li><a href="#practical-example">Practical Example</a></li>
+                        <li><a href="#important-note">Important Note on Assumptions</a></li>
+                    </ul>
+                </div>
+                
+                <h2 id="prerequisites">Prerequisites</h2>
+                <p>You understand how to turn robot linear and angular velocity commands into wheel velocities in revolutions per second.</p>
+                
+                <h2 id="calculate-wheel-displacements">Calculate Wheel Displacements</h2>
+                <p>First, we calculate the distance each wheel has traveled based on the number of revolutions since the last time step. This requires knowing:</p>
+                
+                <ul>
+                    <li>\( N \): Number of revolutions for a wheel</li>
+                    <li>\( r \): Radius of the wheel</li>
+                </ul>
+                
+                <div class="math-formula">
+                    <span class="formula-label">Wheel Displacement Formula:</span>
+                    \[ D = 2\pi r N \]
+                    <p>Where \( D \) is the distance traveled by the wheel.</p>
+                </div>
+                
+                <h2 id="calculate-average-displacement">Calculate the Robot's Average Displacement and Orientation Change</h2>
+                <p>Next, we determine the robot's average displacement and the change in its orientation. The average displacement (\( D_{avg} \)) is the mean of the distances traveled by both wheels:</p>
+                
+                <div class="math-formula">
+                    <span class="formula-label">Average Displacement:</span>
+                    \[ D_{avg} = \frac{D_r + D_l}{2} \]
+                    <p>Where \( D_r \) is the displacement of the right wheel and \( D_l \) is the displacement of the left wheel.</p>
+                </div>
+                
+                <p>The change in orientation (\( \Delta\theta \)), measured in radians, is influenced by the difference in wheel displacements and the distance between the wheels (\( L \)):</p>
+                
+                <div class="math-formula">
+                    <span class="formula-label">Change in Orientation:</span>
+                    \[ \Delta\theta = \frac{D_r - D_l}{L} \]
+                </div>
+                
+                <h2 id="calculate-global-position">Calculate Changes in the Global Position</h2>
+                <p>Now, we can calculate the robot's movement in the global reference frame. Assuming the robot's initial orientation is \( \theta \), and using \( D_{avg} \) and \( \Delta\theta \), we find the changes in the x and y positions as follows:</p>
+                
+                <div class="math-formula">
+                    <span class="formula-label">Change in Global Position (Exact):</span>
+                    \[ \Delta x = D_{avg} \times \cos\left(\theta + \frac{\Delta\theta}{2}\right) \]
+                    \[ \Delta y = D_{avg} \times \sin\left(\theta + \frac{\Delta\theta}{2}\right) \]
+                </div>
+                
+                <p>You will often see the following equation instead:</p>
+                
+                <div class="math-formula">
+                    <span class="formula-label">Change in Global Position (Simplified):</span>
+                    \[ \Delta x = D_{avg} \times \cos(\theta + \Delta\theta) \]
+                    \[ \Delta y = D_{avg} \times \sin(\theta + \Delta\theta) \]
+                </div>
+                
+                <p>This simplification assumes \( \Delta\theta \) is relatively small, allowing us to approximate the displacement direction using the final orientation \( \theta_{new} \) without significant loss of accuracy. It's a useful approximation for small time steps or when precise integration of orientation over displacement is not critical.</p>
+                
+                <p>To find the robot's new orientation:</p>
+                
+                <div class="math-formula">
+                    <span class="formula-label">New Orientation:</span>
+                    \[ \theta_{new} = \theta + \Delta\theta \]
+                </div>
+                
+                <pre># Keep angle between -PI and PI  
+if (self.new_yaw_angle > PI):
+    self.new_yaw_angle = self.new_yaw_angle - (2 * PI)
+if (self.new_yaw_angle < -PI):
+    self.new_yaw_angle = self.new_yaw_angle + (2 * PI)</pre>
+                
+                <p>For ROS 2, you would then convert this new yaw angle into a quaternion.</p>
+                
+                <h2 id="update-global-position">Update the Robot's Global Position</h2>
+                <p>Finally, we update the robot's position in the global reference frame. If the robot's previous position was (\( x, y \)), the new position (\( x_{new}, y_{new} \)) is given by:</p>
+                
+                <div class="math-formula">
+                    <span class="formula-label">Update Global Position:</span>
+                    \[ x_{new} = x + \Delta x \]
+                    \[ y_{new} = y + \Delta y \]
+                </div>
+                
+                <h2 id="practical-example">Practical Example</h2>
+                <p>Let's apply these steps with sample values:</p>
+                
+                <div class="math-formula">
+                    <span class="formula-label">Given Values:</span>
+                    \[ r = 0.1 \text{ m}, \quad N_r = 50, \quad N_l = 48, \quad L = 0.5 \text{ m}, \quad \theta = 2.0 \text{ rad} \]
+                    \[ x = 0.0 \text{ m}, \quad y = 0.0 \text{ m} \]
+                </div>
+                
+                <p>Using these values, we'll calculate the robot's new position and orientation.</p>
+                
+                <div class="example-box">
+                    <h4>Step 1: Wheel Displacements</h4>
+                    \[ D_r = 2\pi \times 0.1 \times 50 = 31.416 \text{ m} \]
+                    \[ D_l = 2\pi \times 0.1 \times 48 = 30.159 \text{ m} \]
+                </div>
+                
+                <div class="example-box">
+                    <h4>Step 2: Average Displacement and Orientation Change</h4>
+                    \[ D_{avg} = \frac{31.416 + 30.159}{2} = 30.7875 \text{ m} \]
+                    \[ \Delta\theta = \frac{31.416 - 30.159}{0.5} = 2.514 \text{ rad} \]
+                </div>
+                
+                <div class="example-box">
+                    <h4>Step 3: Changes in Global Position</h4>
+                    \[ \Delta x = 30.7875 \times \cos\left(2.0 + \frac{2.514}{2}\right) = 30.7875 \times \cos(3.257) = -4.34 \text{ m} \]
+                    \[ \Delta y = 30.7875 \times \sin\left(2.0 + \frac{2.514}{2}\right) = 30.7875 \times \sin(3.257) = 4.80 \text{ m} \]
+                </div>
+                
+                <div class="example-box">
+                    <h4>Step 4: New Global Position and Orientation</h4>
+                    \[ \theta_{new} = 2.0 + 2.514 = 4.514 \text{ rad} \]
+                    \[ x_{new} = 0.0 + (-4.34) = -4.34 \text{ m} \]
+                    \[ y_{new} = 0.0 + 4.80 = 4.80 \text{ m} \]
+                    <p>Therefore the new orientation of the robot is 4.514 radians, and the robot is currently located at (\( x = -4.34 \text{ m}, y = 4.80 \text{ m} \)).</p>
+                </div>
+                
+                <h2 id="important-note">Important Note on Assumptions</h2>
+                <p>The calculations for wheel odometry as demonstrated in the example above are made under two crucial assumptions:</p>
+                
+                <p><strong>No Wheel Slippage:</strong> It's assumed that the wheels of the robot do not slip during movement. Wheel slippage can occur due to loss of traction, often caused by slick surfaces or rapid acceleration/deceleration. When slippage occurs, the actual distance traveled by the robot may differ from the calculated values, as the wheel rotations do not accurately reflect movement over the ground.</p>
+                
+                <p><strong>Adequate Friction:</strong> The calculations also assume that there is adequate friction between the wheels and the surface on which the robot is moving. Adequate friction is necessary for the wheels to grip the surface effectively, allowing for precise control over the robot's movement. Insufficient friction can lead to wheel slippage, which, as mentioned, would result in inaccuracies in the odometry data.</p>
+                
+                <p>These assumptions are essential for the accuracy of wheel odometry calculations. In real-world scenarios, various factors such as floor material, wheel material, and robot speed can affect these conditions.</p>
+                
+                <p>Therefore, while the mathematical model provides a foundational understanding of how to calculate a robot's position and orientation based on wheel rotations, you should be aware of these limitations and consider implementing corrective measures or additional sensors to account for potential discrepancies in odometry data due to slippage or inadequate friction.</p>
+            </div>
+            
+            <div class="post-navigation">
+                <a href="#" class="btn"><i class="fas fa-arrow-left"></i> Previous Post: Calculating Wheel Velocities for a Differential Drive Robot</a>
+                <a href="#" class="btn">Next Post: Create a Launch File for a Simulated Robotic Arm – ROS 2 <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="widget">
+                <h3>About AIBOMECH</h3>
+                <p>AIBOMECH is dedicated to teaching robotics and mechatronics concepts through practical tutorials and examples.</p>
+                <p>Our YouTube channel provides in-depth tutorials on robotics, automation, and AI integration in mechanical systems.</p>
+                <a href="https://www.youtube.com/@AIBOMECH" class="btn btn-block" target="_blank">
+                    <i class="fab fa-youtube"></i> Visit YouTube Channel
+                </a>
+            </div>
+            
+            <div class="widget subscribe-form">
+                <h3>Subscribe</h3>
+                <p>Get the latest tutorials and updates delivered to your inbox.</p>
+                <input type="email" placeholder="Your email address">
+                <button class="btn btn-block">Subscribe</button>
+            </div>
+            
+            <div class="widget recent-posts">
+                <h3>Recent Posts</h3>
+                <ul>
+                    <li><a href="#">The Most Important Skills to Get Rich in AI and Robotics</a></li>
+                    <li><a href="#">How Extreme Focus Can Propel Your Robotics Career Forward</a></li>
+                    <li><a href="#">The Hardest Part of Robotics? Dealing With People</a></li>
+                    <li><a href="#">Why Most Robotics Startups Fail (And How to Win)</a></li>
+                    <li><a href="#">How to Learn Robotics the Right Way – No Shortcuts</a></li>
+                </ul>
+            </div>
+            
+            <div class="widget">
+                <h3>Tags</h3>
+                <div class="tags">
+                    <span class="tag">ROS</span>
+                    <span class="tag">Robotics</span>
+                    <span class="tag">Odometry</span>
+                    <span class="tag">Navigation</span>
+                    <span class="tag">Tutorial</span>
+                    <span class="tag">Differential Drive</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-section">
+                <h3>AIBOMECH</h3>
+                <p>Teaching practical robotics and mechatronics skills for the real world.</p>
+                <div class="social-links">
+                    <a href="https://www.youtube.com/@AIBOMECH" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <p><a href="#">Home</a></p>
+                <p><a href="#">Tutorials</a></p>
+                <p><a href="#">About Me</a></p>
+                <p><a href="#">Contact</a></p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-envelope"></i> Email: contact@aibomech.com</p>
+                <p><i class="fas fa-globe"></i> Website: www.aibomech.com</p>
+            </div>
+        </div>
+        
+        <div class="container footer-bottom">
+            <p>&copy; 2024 AIBOMECH. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
